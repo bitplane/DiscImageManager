@@ -1041,14 +1041,15 @@ begin
         if(not newmap)and(dirtype=2)then
          dirtype:=1; //Can't have big dir on old map
         //Get the image size
-        harddrivesize:=GetDriveSize(Command[3]);
-        //Check that it is not over, or under, the limits
-        if harddrivesize<20*1024*1024 then
-         harddrivesize:=20*1024*1024;  //20MB min
-        if harddrivesize>1000*1024*1024 then
-         harddrivesize:=1000*1024*1024;//1000MB max
-        if(not newmap)and(harddrivesize>512*1024*1024)then
-         harddrivesize:=512*1024*1024; //512MB max for old map
+        harddrivesize:=GetDriveSize(Copy(Command[3],3,MaxInt));
+        //Check the size in KB before converting to bytes
+        if harddrivesize<20*1024 then
+         harddrivesize:=20*1024;  //20MB min
+        if harddrivesize>1000*1024 then
+         harddrivesize:=1000*1024;//1000MB max
+        if(not newmap)and(harddrivesize>512*1024)then
+         harddrivesize:=512*1024; //512MB max for old map
+        harddrivesize:=harddrivesize*1024;
        end;
       //OK, now create it
       ok:=Image.FormatHDD(diAcornADFS,harddrivesize,True,newmap,dirtype,False);
