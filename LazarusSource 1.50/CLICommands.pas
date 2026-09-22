@@ -1299,11 +1299,12 @@ begin
         if UpperCase(Params[3][2]) = 'B' then DirType := 2;
         if NewMap and (DirType = 0) then DirType := 1;
         if (not NewMap) and (DirType = 2) then DirType := 1;
-        HardDriveSize := GetDriveSize(Params[3]);
-        if HardDriveSize < 20 * 1024 * 1024 then HardDriveSize := 20 * 1024 * 1024;
-        if HardDriveSize > 1000 * 1024 * 1024 then HardDriveSize := 1000 * 1024 * 1024;
-        if (not NewMap) and (HardDriveSize > 512 * 1024 * 1024) then
-          HardDriveSize := 512 * 1024 * 1024;
+        HardDriveSize := GetDriveSize(Copy(Params[3], 3, MaxInt));
+        if HardDriveSize < 20 * 1024 then HardDriveSize := 20 * 1024;
+        if HardDriveSize > 1000 * 1024 then HardDriveSize := 1000 * 1024;
+        if (not NewMap) and (HardDriveSize > 512 * 1024) then
+          HardDriveSize := 512 * 1024;
+        HardDriveSize := HardDriveSize * 1024;
       end;
     end;
 
