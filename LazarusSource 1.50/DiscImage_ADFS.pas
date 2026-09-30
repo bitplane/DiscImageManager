@@ -2229,7 +2229,7 @@ begin
      begin
       //Update the checksum, if it is a directory
       if(Pos('D',file_details.Attributes)>0)then
-       if FDirType>diADFSOldDir then //New/Big Directory (Old Dir has zero for checksum)
+       if FDirType>=diADFSOldDir then //Maintain checks for every directory format
         WriteByte(CalculateADFSDirCheck(dest),dest+(file_details.Length-1));
       //Now update the free space map
       if not FMap then //Old map
@@ -3071,7 +3071,7 @@ begin
     Write32b(heapctr,$14,dirbuffer); //BigDirNamesSize
    //Update the checksum
    if FDirType=diADFSOldDir then //Old - can be zero
-    WriteByte($00,$4FF,dirbuffer);
+    WriteByte(CalculateADFSDirCheck($0,dirbuffer),$4FF,dirbuffer);
    if FDirType=diADFSNewDir then //New
     WriteByte(CalculateADFSDirCheck($0,dirbuffer),$7FF,dirbuffer);
    if FDirType=diADFSBigDir then //Big
