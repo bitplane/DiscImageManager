@@ -1579,7 +1579,24 @@ begin
  Write24b($4077,$1FB); //Random 16 bit number
  //Old map FreeEnd
  WriteByte($03,$1FE);
+ if (FDirType=diADFSOldDir)and(disc_size[0]>1638400) then
+ begin
+  //Hard discs carry a defect list and partial disc record at C00-DFF.
+  //Keep this area outside the free space map before any files are added.
+  Write24b(($C00-(root+root_size))div$100,$100);
+  Write24b($E00 div$100,$003);
+  Write24b((disc_size[0]-$E00)div$100,$103);
+  WriteByte($06,$1FE);
+  Write32b($20000000,$C00);
+  WriteByte(8,$DC0);
+  WriteByte(secspertrack,$DC1);
+  WriteByte(heads,$DC2);
+  Write32b(root,$DCC);
+  Write32b(disc_size[0],$DD0);
+  WriteByte(ByteCheckSum($C00,$200,True),$DFF);
+ end;
  //Checksum
+ WriteByte(ByteCheckSum($0000,$100,False),$0FF);
  WriteByte(ByteCheckSum($0100,$100,False),$1FF);
 end;
 
