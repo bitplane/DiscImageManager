@@ -838,6 +838,7 @@ type
                 SetLength(Buffer, F.Size);
                 if F.Size > 0 then F.ReadBuffer(Buffer[0], F.Size);
                 ResetDirEntry(FileDetails);
+                FileDetails.Attributes := 'RW';
                 FileDetails.Filename := SR.Name;
                 FileDetails.Parent := FContext.Image.GetParent(FContext.CurrentDir);
                 FileDetails.Length := F.Size;
@@ -966,6 +967,7 @@ begin
           SetLength(Buffer, F.Size);
           if F.Size > 0 then F.ReadBuffer(Buffer[0], F.Size);
           ResetDirEntry(FileDetails);
+          FileDetails.Attributes := 'RW';
           FileDetails.Filename := ExtractFileName(OSFiles[Ptr].Filename);
           FileDetails.Parent := FContext.Image.GetParent(FContext.CurrentDir);
           FileDetails.Length := F.Size;
